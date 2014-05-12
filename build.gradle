@@ -1,0 +1,84 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.10.+'
+    }
+}
+
+
+apply plugin: 'android'
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+
+dependencies {
+
+    //compile project(':paycard-parser')
+
+
+    // compile 'com.google.guava:guava:17.0@jar'
+   // compile group: 'com.googlecode', name: 'javaemvreader', version: '0.6.0-SNAPSHOT', classifier: 'minimal-noswing-withdeps'
+
+    //testCompile 'junit:junit:4.11@jar'
+    //testCompile 'org.hamcrest:hamcrest-all:1.3@jar'
+
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.3"  
+
+    sourceSets {
+        main {
+            // otherwise aidl task does not see aidl files in the project
+            aidl.srcDirs = ['src/main/aidl']
+
+        }
+//        instrumentTest.setRoot('src/tests')
+    }
+    defaultConfig {
+   //     packageName "com.nonosoft.nfccreditcardtool"
+//        versionCode 1
+//        versionName "0.0.1"
+   //     minSdkVersion 10
+   //     targetSdkVersion 19
+    }
+
+    packagingOptions {
+        exclude  'META-INF/LICENSE'
+        exclude  'META-INF/NOTICE'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(ttboxSignKeystore)
+            storePassword ttboxSignStorepass
+            keyAlias "android"
+            keyPassword ttboxSignKeypass
+        }
+    }
+    buildTypes {
+        debug {
+            //signingConfig signingConfigs.debug
+            debuggable true
+        }
+
+        release {
+            //http://tools.android.com/tech-docs/new-build-system/user-guide
+            debuggable false
+            runProguard true
+            zipAlign true
+            proguardFile('proguard.txt')
+            signingConfig signingConfigs.release
+        }
+
+    }
+
+}
